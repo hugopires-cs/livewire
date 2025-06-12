@@ -10876,6 +10876,9 @@ var onPageChanges = /* @__PURE__ */ new Map();
 document.addEventListener("livewire:navigated", () => {
   onPageChanges.forEach((i) => i(new URL(window.location.href)));
 });
+on("morphed", () => {
+  onPageChanges.forEach((i) => i(new URL(window.location.href)));
+});
 globalDirective("current", ({ el, directive: directive2, cleanup }) => {
   let expression = directive2.expression;
   let options = {

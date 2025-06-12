@@ -9973,6 +9973,9 @@ ${expression ? 'Expression: "' + expression + '"\n\n' : ""}`, el);
   document.addEventListener("livewire:navigated", () => {
     onPageChanges.forEach((i) => i(new URL(window.location.href)));
   });
+  on2("morphed", () => {
+    onPageChanges.forEach((i) => i(new URL(window.location.href)));
+  });
   globalDirective("current", ({ el, directive: directive3, cleanup: cleanup2 }) => {
     let expression = directive3.expression;
     let options = {
