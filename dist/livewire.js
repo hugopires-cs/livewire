@@ -9295,6 +9295,15 @@ ${expression ? 'Expression: "' + expression + '"\n\n' : ""}`, el);
           } });
         });
       }
+    }, (el) => {
+      if (!Array.from(el.attributes).some((attribute) => matchesForLivewireDirective(attribute.name)))
+        return;
+      let directives2 = Array.from(el.getAttributeNames()).filter((name) => matchesForLivewireDirective(name)).map((name) => extractDirective(el, name));
+      directives2.forEach((directive3) => {
+        trigger2("directive.global.init", { el, directive: directive3, cleanup: (callback) => {
+          module_default.onAttributeRemoved(el, directive3.raw, callback);
+        } });
+      });
     }));
     module_default.start();
     setTimeout(() => window.Livewire.initialRenderIsFinished = true);
@@ -10079,9 +10088,6 @@ ${expression ? 'Expression: "' + expression + '"\n\n' : ""}`, el);
   module_default.addInitSelector(() => `[wire\\:current]`);
   var onPageChanges = /* @__PURE__ */ new Map();
   document.addEventListener("livewire:navigated", () => {
-    onPageChanges.forEach((i) => i(new URL(window.location.href)));
-  });
-  on2("morphed", () => {
     onPageChanges.forEach((i) => i(new URL(window.location.href)));
   });
   globalDirective("current", ({ el, directive: directive3, cleanup: cleanup2 }) => {

@@ -10187,6 +10187,15 @@ function start() {
         } });
       });
     }
+  }, (el) => {
+    if (!Array.from(el.attributes).some((attribute) => matchesForLivewireDirective(attribute.name)))
+      return;
+    let directives = Array.from(el.getAttributeNames()).filter((name) => matchesForLivewireDirective(name)).map((name) => extractDirective(el, name));
+    directives.forEach((directive2) => {
+      trigger("directive.global.init", { el, directive: directive2, cleanup: (callback) => {
+        import_alpinejs6.default.onAttributeRemoved(el, directive2.raw, callback);
+      } });
+    });
   }));
   import_alpinejs6.default.start();
   setTimeout(() => window.Livewire.initialRenderIsFinished = true);
@@ -10982,9 +10991,6 @@ var import_alpinejs14 = __toESM(require_module_cjs());
 import_alpinejs14.default.addInitSelector(() => `[wire\\:current]`);
 var onPageChanges = /* @__PURE__ */ new Map();
 document.addEventListener("livewire:navigated", () => {
-  onPageChanges.forEach((i) => i(new URL(window.location.href)));
-});
-on("morphed", () => {
   onPageChanges.forEach((i) => i(new URL(window.location.href)));
 });
 globalDirective("current", ({ el, directive: directive2, cleanup }) => {
